@@ -958,10 +958,12 @@ public class GitSCM extends GitSCMBackwardCompatibility {
                     build,
                     URIRequirementBuilder.fromUri(url).build());
             if (c != null && GitClient.CREDENTIALS_MATCHER.matches(c)) {
-                for (var contextualizer : ExtensionList.lookup(GitCredentialContextualizer.class)) {
-                    var contextualized = contextualizer.contextualize(c, build, url);
-                    if (contextualized != null) {
-                        return contextualized;
+                if (url != null) {
+                    for (var contextualizer : ExtensionList.lookup(GitCredentialContextualizer.class)) {
+                        var contextualized = contextualizer.contextualize(c, build, url);
+                        if (contextualized != null) {
+                            return contextualized;
+                        }
                     }
                 }
                 return c;
